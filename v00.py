@@ -1,12 +1,13 @@
 import cv2 as cv
 import numpy as np
+from ultralytics import YOLO
 
 def nothing():
     pass
 
 def main():
-    #cap = cv.VideoCapture("Hsv_Object_Detection/hsv.mp4")
-    cap = cv.VideoCapture(0)
+    cap = cv.VideoCapture("video.mp4")
+    model = YOLO("best.pt")
     
     cv.namedWindow("Trackbar")
 
@@ -18,8 +19,9 @@ def main():
     cv.createTrackbar("UV","Trackbar",0,255, nothing)
 
     while True:
-        _, frame = cap.read()
-        frame = cv.resize(frame,(720,480))
+        ret, frame = cap.read()
+        if not ret:
+            break
         hsv = cv.cvtColor(frame,cv.COLOR_BGR2HSV)
         
         lh = cv.getTrackbarPos("LH","Trackbar")
@@ -29,8 +31,8 @@ def main():
         us = cv.getTrackbarPos("US","Trackbar")
         uv = cv.getTrackbarPos("UV","Trackbar")
 
-        lower_blue = np.array([lh,ls,lv])
-        upper_blue = np.array([uh,us,uv])
+        lower_blue = np.array([lh,50,lv])
+        upper_blue = np.array([uh,180,180])
 
         mask = cv.inRange(hsv,lower_blue,upper_blue)
 
