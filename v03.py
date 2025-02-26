@@ -22,10 +22,10 @@ def contour_corner(contour):
 
 
 def main():
-    cap = cv.VideoCapture("comb.MOV")
+    cap = cv.VideoCapture("DJI_0500.MP4")
 
-    rgb_color1 = (219, 66, 70)  # red
-    rgb_color2 = (16, 75, 148)  # blue
+    rgb_color1 = (251,103,146)  # red
+    rgb_color2 = (0,194,247)  # blue
 
     lower_blue1, upper_blue1 = get_hsv_bounds(rgb_color1)
     lower_blue2, upper_blue2 = get_hsv_bounds(rgb_color2)
@@ -52,11 +52,16 @@ def main():
 
         for contour in contours:
             area = cv.contourArea(contour)
-            if area > 1000:
+            if area > 100:
                 corner = contour_corner(contour)
+
+                distance_transform = cv.distanceTransform(mask, cv.DIST_L2, 5)
+                _, max_val, _, max_loc = cv.minMaxLoc(distance_transform)
+
                 cv.drawContours(frame, [contour], -1, (0, 255, 0), thickness=cv.FILLED)
                 x, y, w, h = cv.boundingRect(contour)
                 cv.putText(frame, f"Corners: {corner}", (x, y - 10), cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+                cv.circle(frame,max_loc,5,(0,0,0),-1)
 
         # FPS ekleme
         cv.putText(frame, f"FPS: {int(fps)}", (10, 40), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
