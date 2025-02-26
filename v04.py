@@ -2,8 +2,14 @@ import numpy as np
 import cv2 as cv
 import time
 
+kernel = np.array([
+       [0, 0, 1, 0, 0],
+       [0, 1, 1, 1, 0],
+       [1, 1, 1, 1, 1],
+       [0, 1, 1, 1, 0],
+       [0, 0, 1, 0, 0]], dtype="uint8")
 
-def get_hsv_bounds(rgb_color, hue_range=10, sat_min=100, val_min=50):
+def get_hsv_bounds(rgb_color, hue_range=10, sat_min=50, val_min=50):
     bgr_color = np.uint8([[rgb_color[::-1]]])
     hsv_color = cv.cvtColor(bgr_color, cv.COLOR_BGR2HSV)[0][0]
     h, s, v = hsv_color
@@ -22,7 +28,7 @@ def contour_corner(contour):
 
 
 def main():
-    cap = cv.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video03.MP4")
+    cap = cv.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video01.MP4")
 
     rgb_color1 = (251,103,146)  # red
     rgb_color2 = (0,194,247)  # blue
@@ -48,7 +54,10 @@ def main():
         mask2 = cv.inRange(hsv, lower_blue2, upper_blue2)
 
         mask = cv.bitwise_or(mask1, mask2)
-        contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+        opening = cv.morphologyEx(mask, cv.MORPH_OPEN, kernel)
+        closing = cv.morphologyEx(opening, cv.MORPH_CLOSE, kernel)
+
+        contours, _ = cv.findContours(closing, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
         for contour in contours:
             area = cv.contourArea(contour)
