@@ -77,9 +77,12 @@ def main():
         # FPS ekleme
         cv.putText(frame, f"FPS: {int(fps)}", (10, 40), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
+        bitwise = cv.bitwise_and(org, org, mask=mask)
+
         cv.imshow("Frame", frame)
         cv.imshow("Org", org)
         cv.imshow("Mask", mask)
+        cv.imshow("Bitwise", bitwise)
 
         if cv.waitKey(1) & 0xFF == ord('q'):
             break
