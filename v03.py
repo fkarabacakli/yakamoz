@@ -3,7 +3,7 @@ import cv2 as cv
 import time
 
 
-def get_hsv_bounds(rgb_color, hue_range=10, sat_min=100, val_min=50):
+def get_hsv_bounds(rgb_color, hue_range=10, sat_min=50, val_min=50):
     bgr_color = np.uint8([[rgb_color[::-1]]])
     hsv_color = cv.cvtColor(bgr_color, cv.COLOR_BGR2HSV)[0][0]
     h, s, v = hsv_color
@@ -22,7 +22,7 @@ def contour_corner(contour):
 
 
 def main():
-    cap = cv.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video03.MP4")
+    cap = cv.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video02.MP4")
 
     rgb_color1 = (251,103,146)  # red
     rgb_color2 = (0,194,247)  # blue
@@ -54,16 +54,15 @@ def main():
             area = cv.contourArea(contour)
             if area > 100:
                 corner = contour_corner(contour)
-                if corner not in valid_corner:
-                    continue
-                cv.drawContours(frame, [contour], -1, (0, 255, 0), thickness=cv.FILLED)
-                x, y, w, h = cv.boundingRect(contour)
-                cv.putText(frame, f"Corners: {corner}", (x, y - 10), cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
-                M = cv.moments(contour)
-                if M["m00"] != 0:
-                    cx = int(M["m10"] / M["m00"])  
-                    cy = int(M["m01"] / M["m00"])
-                    cv.circle(frame, (cx, cy), 5, (0, 0, 0), -1)
+                if corner in valid_corner:
+                    cv.drawContours(frame, [contour], -1, (0, 255, 0), thickness=cv.FILLED)
+                    x, y, w, h = cv.boundingRect(contour)
+                    cv.putText(frame, f"Corners: {corner}", (x, y - 10), cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+                    M = cv.moments(contour)
+                    if M["m00"] != 0:
+                        cx = int(M["m10"] / M["m00"])  
+                        cy = int(M["m01"] / M["m00"])
+                        cv.circle(frame, (cx, cy), 5, (0, 0, 0), -1)
 
         # FPS ekleme
         cv.putText(frame, f"FPS: {int(fps)}", (10, 40), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
