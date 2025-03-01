@@ -2,8 +2,8 @@ import cv2
 from ultralytics import YOLO
 import numpy as np
 
-cap = cv2.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video03.MP4")
-model = YOLO("best.pt")
+cap = cv2.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video01.mp4")
+model = YOLO("best-2.pt")
 
 while True:
     ret, frame = cap.read()

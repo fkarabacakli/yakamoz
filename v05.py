@@ -29,7 +29,7 @@ def contour_corner(contour):
 
 
 def main():
-    cap = cv.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video03.MP4")
+    cap = cv.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video02.MP4")
 
     rgb_color1 = (251,103,146)  # red
     rgb_color2 = (0,194,247)  # blue
@@ -37,15 +37,14 @@ def main():
     lower_blue1, upper_blue1 = get_hsv_bounds(rgb_color1)
     lower_blue2, upper_blue2 = get_hsv_bounds(rgb_color2)
 
-    model = YOLO("best.pt")
+    model = YOLO("best-2.pt")
     
     prev_time = time.time()
-    valid_corner = [3,6]
     while True:
         ret, frame = cap.read()
         if not ret:
             break
-
+        frame = cv.resize(frame, (854,480))
         current_time = time.time()
         fps = 1 / (current_time - prev_time)
         prev_time = current_time
@@ -65,8 +64,6 @@ def main():
             area = cv.contourArea(contour)
             if area > 100:
                 corner = contour_corner(contour)
-                if corner not in valid_corner:
-                    continue
                 cv.drawContours(frame, [contour], -1, (0, 255, 0), thickness=cv.FILLED)
                 x, y, w, h = cv.boundingRect(contour)
                 cv.putText(frame, f"Corners: {corner}", (x, y - 10), cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
