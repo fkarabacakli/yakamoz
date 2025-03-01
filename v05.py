@@ -10,7 +10,7 @@ kernel = np.array([
        [0, 1, 1, 1, 0],
        [0, 0, 1, 0, 0]], dtype="uint8")
 
-def get_hsv_bounds(rgb_color, hue_range=10, sat_min=50, val_min=50):
+def get_hsv_bounds(rgb_color, hue_range=10, sat_min=100, val_min=100):
     bgr_color = np.uint8([[rgb_color[::-1]]])
     hsv_color = cv.cvtColor(bgr_color, cv.COLOR_BGR2HSV)[0][0]
     h, s, v = hsv_color
@@ -29,7 +29,7 @@ def contour_corner(contour):
 
 
 def main():
-    cap = cv.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video02.MP4")
+    cap = cv.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video03.MP4")
 
     rgb_color1 = (251,103,146)  # red
     rgb_color2 = (0,194,247)  # blue
@@ -37,7 +37,7 @@ def main():
     lower_blue1, upper_blue1 = get_hsv_bounds(rgb_color1)
     lower_blue2, upper_blue2 = get_hsv_bounds(rgb_color2)
 
-    model = YOLO("best-2.pt")
+    model = YOLO("best.onnx")
     
     prev_time = time.time()
     while True:
@@ -73,7 +73,6 @@ def main():
                     cy = int(M["m01"] / M["m00"])
                     cv.circle(frame, (cx, cy), 5, (0, 0, 0), -1)
 
-        # FPS ekleme
         cv.putText(frame, f"FPS: {int(fps)}", (10, 40), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
         bitwise = cv.bitwise_and(org, org, mask=mask)
