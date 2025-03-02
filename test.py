@@ -51,7 +51,7 @@ def contour_corner(contour):
     return len(approx)
 
 def main():
-    cap = cv.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video03.MP4")
+    cap = cv.VideoCapture("Video01.MP4")
     engine_path = "best.engine"
     engine = load_engine(engine_path)
     context = engine.create_execution_context()
