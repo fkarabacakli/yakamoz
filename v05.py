@@ -29,7 +29,7 @@ def contour_corner(contour):
 
 
 def main():
-    cap = cv.VideoCapture("/Users/halilfurkankarabacakli/Desktop/Videos/Video03.MP4")
+    cap = cv.VideoCapture("Video01.MP4")
 
     rgb_color1 = (251,103,146)  # red
     rgb_color2 = (0,194,247)  # blue
