@@ -37,7 +37,7 @@ def main():
     lower_blue1, upper_blue1 = get_hsv_bounds(rgb_color1)
     lower_blue2, upper_blue2 = get_hsv_bounds(rgb_color2)
 
-    model = YOLO("best.onnx")
+    model = YOLO("best.pt")
     
     prev_time = time.time()
     while True:
