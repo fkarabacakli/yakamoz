@@ -76,7 +76,7 @@ def main():
                     cy = int(M["m01"] / M["m00"])
                     cv.circle(bitwise, (cx, cy), 4, (0, 0, 255), -1)
 
-        cv.putText(bitwise, f"FPS: {int(12)}", (10, 40), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv.putText(bitwise, f"FPS: {fps}", (10, 40), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
         
         results = model(bitwise)
